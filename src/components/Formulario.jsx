@@ -1,11 +1,32 @@
 import { Fragment } from "react"
 import { MARCAS, YEARS, PLANES } from "../constants"
+import useCotizador from "../hooks/useCotizador"
+import Error from "../components/Error"
 
 
 function Formulario() {
+
+  const { datos, handleChangeDatos, error, setError, valorizarSeguro } = useCotizador()
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    
+    if (Object.values(datos).includes('')) {
+      setError('Todos los campos son oblifatorios')
+      return
+    }
+
+    setError('')
+    valorizarSeguro()
+
+  }
+ 
   return (
     <>
-      <form>
+      {error && <Error />}
+      <form
+        onSubmit={handleSubmit}
+      >
         <div className="my-5">
           <label className="block mb-3 font-bold text-gray-500 uppercase">
             Marca
@@ -13,6 +34,8 @@ function Formulario() {
           <select 
             name="marca"
             className="w-full p-3 bg-white border border-gray-200 rounded-lg"
+            onChange={e => handleChangeDatos(e)}
+            value={datos.marca}
           >
             <option value="">-- Selecciona Marca --</option>
             {MARCAS.map(marca => (
@@ -25,8 +48,10 @@ function Formulario() {
             Año
           </label>
           <select 
-            name="marca"
+            name="year"
             className="w-full p-3 bg-white border border-gray-200 rounded-lg"
+            onChange={e => handleChangeDatos(e)}
+            value={datos.year}
           >
             <option value="">-- Selecciona Año --</option>
             {YEARS.map(year => (
@@ -42,7 +67,12 @@ function Formulario() {
               {PLANES.map(plan => (
                 <Fragment key={plan.id}>
                   <label>{plan.nombre}</label>
-                  <input type="radio" name="plan" value={plan.id} />
+                  <input 
+                    type="radio" 
+                    name="plan" 
+                    value={plan.id}
+                    onChange={e => handleChangeDatos(e)}
+                  />
                 </Fragment>
               ))}
           </div>
