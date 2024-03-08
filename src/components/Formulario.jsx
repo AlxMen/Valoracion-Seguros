@@ -63,16 +63,16 @@ function Formulario() {
           <label className="block mb-3 font-bold text-gray-500 uppercase">
             Elige un Plan
           </label>
-          <div className="flex gap-3 items-center">
+          <div className="grid gap-3 grid-cols-4">
               {PLANES.map(plan => (
                 <Fragment key={plan.id}>
-                  <label>{plan.nombre}</label>
                   <input 
                     type="radio" 
                     name="plan" 
                     value={plan.id}
                     onChange={e => handleChangeDatos(e)}
                   />
+                  <label>{plan.nombre}</label>
                 </Fragment>
               ))}
           </div>
